@@ -4,6 +4,7 @@
 =============================================================================
 """
 
+import re
 from typing import List, Dict, Tuple, Optional, Set
 import numpy as np
 from dataclasses import dataclass
@@ -322,12 +323,39 @@ class ConstraintValidator:
         
         return suggestions
 
-class AdvancedValidator(Validator):
+class AdvancedValidator:
     """متحقق محسّن مع جميع الميزات"""
     
     def __init__(self):
-        super().__init__()
         self.constraint_validator = ConstraintValidator()
+        self.min_number = Config.MIN_NUMBER
+        self.max_number = Config.MAX_NUMBER
+    
+    def validate_numbers(self, text: str) -> List[int]:
+        """التحقق من الأرقام المدخلة واستخراجها"""
+        if not text or not text.strip():
+            return []
+        
+        # استخراج الأرقام من النص
+        import re
+        numbers = []
+        
+        # البحث عن الأرقام في النص
+        number_pattern = r'\d+'
+        matches = re.findall(number_pattern, text)
+        
+        for match in matches:
+            try:
+                num = int(match)
+                if self.min_number <= num <= self.max_number:
+                    numbers.append(num)
+            except ValueError:
+                continue
+        
+        # إزالة التكرارات وفرز
+        numbers = sorted(list(set(numbers)))
+        
+        return numbers
     
     def validate_with_constraints(self, text: str, constraints: Dict = None) -> Tuple[List[int], List[str]]:
         """التحقق مع فحص القيود"""
