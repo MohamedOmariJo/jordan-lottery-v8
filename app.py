@@ -12,9 +12,9 @@ import numpy as np
 import io
 import requests
 from datetime import datetime, timedelta
+from typing import Tuple, Optional, List, Dict
 import plotly.express as px
 import plotly.graph_objects as go
-from typing import Tuple, Optional, List, Dict
 import warnings
 warnings.filterwarnings('ignore')
 
