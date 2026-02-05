@@ -15,7 +15,11 @@
 3. استيرادات مفقودة في app.py
    ✅ from typing import Tuple, Optional, List, Dict
 
-4. هيكل المجلدات
+4. استيراد Set مفقود في models.py (السطر 449)
+   ❌ from typing import List, Dict, Tuple, Optional
+   ✅ from typing import List, Dict, Tuple, Optional, Set
+
+5. هيكل المجلدات
    ✅ تم إنشاء config/, core/, utils/
 
 ════════════════════════════════════════════════════════════════
@@ -36,7 +40,7 @@
 │   ├── __init__.py
 │   ├── validator.py          ✅ مصلح
 │   ├── analyzer.py           ✅ جاهز
-│   ├── models.py             ✅ جاهز
+│   ├── models.py             ✅ مصلح
 │   ├── generator.py          ✅ جاهز
 │   ├── database.py           ✅ جاهز
 │   └── notifications.py      ✅ جاهز

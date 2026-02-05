@@ -75,6 +75,22 @@ AttributeError: module 'logging' has no attribute 'config'
 import logging.config  # إضافة هذا السطر
 ```
 
+### 5. استيراد Set مفقود في models.py
+
+**المشكلة:**
+```
+NameError: name 'Set' is not defined
+File: core/models.py, line 449
+```
+
+**السبب:**
+- استخدام `Set[int]` في دالة `_get_common_numbers` بدون استيراد `Set` من `typing`
+
+**الحل:**
+```python
+from typing import List, Dict, Tuple, Optional, Set  # إضافة Set
+```
+
 ## 📝 التغييرات في core/validator.py
 
 ### قبل الإصلاح:
@@ -155,6 +171,7 @@ print(numbers)  # يجب أن يطبع: [1, 5, 10, 15, 20, 25]
 ## 🔍 ملفات تم تعديلها
 
 - ✅ `core/validator.py` - إصلاح الوراثة + إضافة validate_numbers
+- ✅ `core/models.py` - إضافة استيراد Set
 - ✅ `utils/logger.py` - إضافة استيراد logging.config
 - ✅ `app.py` - إضافة استيرادات typing
 - ✅ إنشاء هيكل المجلدات الكامل
