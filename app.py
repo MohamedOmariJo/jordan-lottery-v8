@@ -14,6 +14,7 @@ import requests
 from datetime import datetime, timedelta
 import plotly.express as px
 import plotly.graph_objects as go
+from typing import Tuple, Optional, List, Dict
 import warnings
 warnings.filterwarnings('ignore')
 
