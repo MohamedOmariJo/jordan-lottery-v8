@@ -102,12 +102,7 @@ class Config:
                 'lottery': {
                     'handlers': ['file', 'console'],
                     'level': 'INFO',
-                    'propagate': False
+                    'propagate': True
                 }
-            },
-            # إضافة root logger (هذا هو الإصلاح الرئيسي)
-            'root': {
-                'handlers': ['console'],
-                'level': 'WARNING'
             }
         }
