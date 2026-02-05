@@ -91,6 +91,33 @@ File: core/models.py, line 449
 from typing import List, Dict, Tuple, Optional, Set  # إضافة Set
 ```
 
+### 6. تضارب metadata في database.py
+
+**المشكلة:**
+```
+sqlalchemy.exc.InvalidRequestError: Mapper properties (i.e. deferred,column_property(), relationship(), etc.) must be declared as @declared_attr callables on declarative mixin classes.
+File: core/database.py, line 37
+```
+
+**السبب:**
+- `metadata` هو اسم محجوز في SQLAlchemy يستخدمه `Base.metadata`
+- استخدام `metadata = Column(JSON)` يتضارب مع النظام الداخلي
+
+**الحل:**
+```python
+# قبل الإصلاح:
+class DrawRecord(Base):
+    metadata = Column(JSON)  # ❌ تضارب!
+
+# بعد الإصلاح:
+class DrawRecord(Base):
+    extra_data = Column(JSON)  # ✅ اسم آمن
+
+# وتحديث الاستخدامات:
+def add_draw_with_analysis(self, ..., extra_data: Dict = None):  # ✅
+    draw_record = DrawRecord(..., extra_data=extra_data or {})   # ✅
+```
+
 ## 📝 التغييرات في core/validator.py
 
 ### قبل الإصلاح:
@@ -172,6 +199,7 @@ print(numbers)  # يجب أن يطبع: [1, 5, 10, 15, 20, 25]
 
 - ✅ `core/validator.py` - إصلاح الوراثة + إضافة validate_numbers
 - ✅ `core/models.py` - إضافة استيراد Set
+- ✅ `core/database.py` - تغيير metadata إلى extra_data
 - ✅ `utils/logger.py` - إضافة استيراد logging.config
 - ✅ `app.py` - إضافة استيرادات typing
 - ✅ إنشاء هيكل المجلدات الكامل

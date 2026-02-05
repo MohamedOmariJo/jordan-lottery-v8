@@ -19,7 +19,11 @@
    ❌ from typing import List, Dict, Tuple, Optional
    ✅ from typing import List, Dict, Tuple, Optional, Set
 
-5. هيكل المجلدات
+5. تضارب metadata في database.py (السطر 37)
+   ❌ metadata = Column(JSON)  # اسم محجوز في SQLAlchemy!
+   ✅ extra_data = Column(JSON)  # تم تغيير الاسم
+
+6. هيكل المجلدات
    ✅ تم إنشاء config/, core/, utils/
 
 ════════════════════════════════════════════════════════════════
@@ -42,7 +46,7 @@
 │   ├── analyzer.py           ✅ جاهز
 │   ├── models.py             ✅ مصلح
 │   ├── generator.py          ✅ جاهز
-│   ├── database.py           ✅ جاهز
+│   ├── database.py           ✅ مصلح
 │   └── notifications.py      ✅ جاهز
 │
 └── utils/

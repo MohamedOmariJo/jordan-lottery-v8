@@ -118,6 +118,7 @@ streamlit run app.py
 |-------|---------|
 | `core/validator.py` | ✅ إصلاح الوراثة من Validator |
 | `core/models.py` | ✅ إضافة استيراد Set |
+| `core/database.py` | ✅ تغيير metadata إلى extra_data |
 | `utils/logger.py` | ✅ إضافة استيراد logging.config |
 | `app.py` | ✅ إضافة استيرادات typing |
 | هيكل المجلدات | ✅ إنشاء config/, core/, utils/ |
