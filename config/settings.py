@@ -1,6 +1,6 @@
 """
 =============================================================================
-🎯 إعدادات التطبيق المحسنة v8.0
+🎯 إعدادات التطبيق المحسنة v8.0 - (تم الإصلاح)
 =============================================================================
 """
 
@@ -17,10 +17,12 @@ class Config:
     APP_NAME = "Jordan Lottery AI Pro"
     
     # ====================================================
-    # 🛠️ إصلاح المسارات (تمت الإضافة لحل المشكلة)
+    # 🔧 الأسطر التي كانت ناقصة وتمت إضافتها للإصلاح
     # ====================================================
-    # تحديد مسار المجلدات الأساسية لتجنب أخطاء النظام
+    # تحديد المسار الرئيسي للمشروع
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    
+    # تحديد مسارات المجلدات بدقة
     LOGS_DIR = os.path.join(BASE_DIR, 'logs')
     EXPORT_DIR = os.path.join(BASE_DIR, 'exports')
     DATA_DIR = os.path.join(BASE_DIR, 'data')
@@ -39,6 +41,7 @@ class Config:
     MIN_NUMBER = 1
     MAX_NUMBER = 32
     DEFAULT_TICKET_SIZE = 6
+    DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
     
     # التوليد
     MAX_TICKETS_PER_GENERATION = 100
@@ -48,6 +51,7 @@ class Config:
     # الذاكرة المؤقتة
     CACHE_TTL = 3600  # ساعة واحدة
     MODEL_CACHE_TTL = 86400  # يوم واحد
+    ENABLE_PROFILING = False
     
     # ML وإحصاءات
     MONTE_CARLO_SIMULATIONS = 50000
@@ -68,7 +72,7 @@ class Config:
     @classmethod
     def get_logging_config(cls) -> Dict[str, Any]:
         """الحصول على إعدادات Logging"""
-        # التأكد من وجود مجلد السجلات
+        # التأكد من وجود مجلد السجلات (يتم إنشاؤه إذا لم يكن موجوداً)
         os.makedirs(cls.LOGS_DIR, exist_ok=True)
         
         return {
@@ -77,7 +81,7 @@ class Config:
             'formatters': {
                 'detailed': {
                     'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    'datefmt': '%Y-%m-%d %H:%M:%S'
+                    'datefmt': cls.DATETIME_FORMAT
                 },
                 'simple': {
                     'format': '%(levelname)s: %(message)s'
@@ -101,7 +105,7 @@ class Config:
             'loggers': {
                 'lottery': {
                     'handlers': ['file', 'console'],
-                    'level': 'INFO',
+                    'level': 'INFO',\
                     'propagate': True
                 }
             }
