@@ -5,8 +5,8 @@
 """
 
 import logging
-import logging.config  # ✅ FIXED: Added this missing import
 import logging.handlers
+import logging.config
 import json
 from datetime import datetime
 from typing import Dict, Any, Optional
@@ -207,7 +207,7 @@ class AppLogger:
                     try:
                         # تحليل timestamp من السجل
                         log_time_str = line.split(' - ')[0]
-                        log_time = datetime.strptime(log_time_str, '%Y-%m-%d %H:%M:%S')
+                        log_time = datetime.strptime(log_time_str, Config.DATETIME_FORMAT)
                         
                         if log_time.timestamp() >= cutoff_date:
                             filtered_logs.append(line.strip())
