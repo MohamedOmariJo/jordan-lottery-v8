@@ -16,14 +16,24 @@ class Config:
     APP_VERSION = "8.0.0 PRO"
     APP_NAME = "Jordan Lottery AI Pro"
     
+    # ====================================================
+    # 🛠️ إصلاح المسارات (تمت الإضافة لحل المشكلة)
+    # ====================================================
+    # تحديد مسار المجلدات الأساسية لتجنب أخطاء النظام
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    LOGS_DIR = os.path.join(BASE_DIR, 'logs')
+    EXPORT_DIR = os.path.join(BASE_DIR, 'exports')
+    DATA_DIR = os.path.join(BASE_DIR, 'data')
+    # ====================================================
+
     # الأمان
     SECRET_KEY = os.getenv("SECRET_KEY", secrets.token_hex(32))
     SESSION_TIMEOUT = timedelta(hours=2)
     
     # البيانات
     GITHUB_URL = "https://raw.githubusercontent.com/MohamedOmariJo/omari/main/250.xlsx"
-    BACKUP_FILE = "data/history.xlsx"
-    DATABASE_URL = "sqlite:///data/lottery_v8.db"
+    BACKUP_FILE = os.path.join(DATA_DIR, "history.xlsx")
+    DATABASE_URL = f"sqlite:///{os.path.join(DATA_DIR, 'lottery_v8.db')}"
     
     # نطاق الأرقام
     MIN_NUMBER = 1
@@ -41,31 +51,12 @@ class Config:
     
     # ML وإحصاءات
     MONTE_CARLO_SIMULATIONS = 50000
-    MARKOV_MIN_OCCURRENCES = 3
-    POISSON_CONFIDENCE_LEVEL = 0.95
+    MARKOV_MIN_DEPTH = 3
     
-    # التنسيقات
-    DATE_FORMAT = "%Y-%m-%d"
-    DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
-    
-    # المسارات
-    LOGS_DIR = "logs"
-    MODELS_DIR = "data/models"
-    EXPORT_DIR = "exports"
-    
-    # API Keys (يجب تعيينها في environment variables)
-    TWITTER_API_KEY = os.getenv("TWITTER_API_KEY", "")
-    TWITTER_API_SECRET = os.getenv("TWITTER_API_SECRET", "")
-    EMAIL_SMTP_SERVER = os.getenv("EMAIL_SMTP_SERVER", "")
-    
-    # إعدادات الأداء
-    ENABLE_PROFILING = False
-    MAX_MEMORY_USAGE_MB = 512
-    MAX_CPU_PERCENT = 80
-    
+    # إعدادات متقدمة لقاعدة البيانات
     @classmethod
-    def get_database_config(cls) -> Dict[str, Any]:
-        """الحصول على إعدادات قاعدة البيانات"""
+    def get_db_args(cls) -> Dict[str, Any]:
+        """إعدادات اتصال قاعدة البيانات"""
         return {
             'url': cls.DATABASE_URL,
             'pool_size': 10,
@@ -77,13 +68,16 @@ class Config:
     @classmethod
     def get_logging_config(cls) -> Dict[str, Any]:
         """الحصول على إعدادات Logging"""
+        # التأكد من وجود مجلد السجلات
+        os.makedirs(cls.LOGS_DIR, exist_ok=True)
+        
         return {
             'version': 1,
             'disable_existing_loggers': False,
             'formatters': {
                 'detailed': {
                     'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    'datefmt': cls.DATETIME_FORMAT
+                    'datefmt': '%Y-%m-%d %H:%M:%S'
                 },
                 'simple': {
                     'format': '%(levelname)s: %(message)s'
